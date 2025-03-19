@@ -1,11 +1,14 @@
 const express = require("express");
 const router = express.Router();
 const taskController = require("../controllers/taskController");
+const verifyToken = require("../middleware/authMiddleware"); // Import JWT middleware
 
-router.get("/tasks", taskController.getTasks);
-router.get("/tasks/:id", taskController.getTaskById);
-router.post("/tasks", taskController.createTask);
-router.put("/tasks/:id", taskController.updateTask);
-router.delete("/tasks/:id", taskController.deleteTask);
+// Protected Task Routes
+router.get("", verifyToken, taskController.getTasks);
+router.get("/:id", verifyToken, taskController.getTaskById);
+router.post("", verifyToken, taskController.createTask);
+router.put("/:id", verifyToken, taskController.updateTask);
+router.delete("/:id", verifyToken, taskController.deleteTask);
+
 
 module.exports = router;
