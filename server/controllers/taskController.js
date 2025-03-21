@@ -1,11 +1,16 @@
 const Task = require("../models/taskModel");
 
 //Get all tasks
-const getTasks = (req, res) =>{
-    Task.getAllTasks((err, tasks) =>{
+const getTasks = async (req, res) =>{
+    try{
+    Task.getAllTasks(req,(err, tasks) =>{
         if (err) return res.status(500).json({error:err.message});
-        res.json(tasks);
+        res.status(200).json(tasks);
     });
+} catch(error){
+    console.error("Error fetching tasks: ",error);
+    res.status(500).json({error: "Internal server error"});
+}
 };
 
 //Get task by ID
@@ -47,4 +52,14 @@ const deleteTask = (req, res) =>{
     });
 };
 
-module.exports = {getTasks, getTaskById, createTask, updateTask, deleteTask};
+
+const assignTask = (req, res) =>{
+    const {taskId, asigneeIds} = req.body;
+
+    Task.assignTask({taskId, asigneeIds}, (err, result) =>{
+        if (err) return res.status(500).json({error: err.message});
+        res.json({message: "Task assigned successfully"});
+    });
+};
+
+module.exports = {getTasks, getTaskById, createTask, updateTask, deleteTask, assignTask};

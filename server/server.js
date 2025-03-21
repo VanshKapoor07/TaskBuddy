@@ -8,6 +8,9 @@ const authController = require("./controllers/authController"); // Import authCo
 
 const authRoutes = require("./routes/authRoutes");
 
+const teamRoutes = require("./routes/teamRoutes");
+
+
 dotenv.config()         //Load .env file
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -29,6 +32,7 @@ app.get("/",(req,res)=>{
 //Use taskRoutes.js
 app.use("/api/tasks",taskRoutes);
 app.use("/api/auth",authRoutes);
+app.use("/api/team",teamRoutes);
 
 
 //Start server
