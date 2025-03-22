@@ -63,6 +63,13 @@ const getAllUsers = (callback) =>{
     })
 }
 
+
+const getMyTasks = (details, callback) =>{
+    db.query("SELECT task_id FROM task_assignees WHERE user_id = ?", [details.id], (err, task_ids) => {
+        if (err) return callback(err, null);
+        return callback(null, task_ids);
+    })
+}
 const findbyemail = (details, callback) => {
     
     db.query("SELECT role,id FROM users WHERE email = ?", [details.email], (err, result) => {
@@ -125,4 +132,4 @@ const delete_user = (details, callback) => {
 
 
 
-module.exports = {createUserTable, authenticateUser, signupUser, loginUser, getAllUsers, findbyemail, delete_user, checkTeam, viewTeamMembers};
+module.exports = {createUserTable, authenticateUser, signupUser, loginUser, getAllUsers, findbyemail, delete_user, checkTeam, viewTeamMembers, getMyTasks};

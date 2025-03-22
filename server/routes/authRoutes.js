@@ -21,4 +21,6 @@ router.post("",middleware.verifyToken, middleware.checkRole(["admin"]), authCont
 
 //router.delete(":/id", authController.deleteUser);
 
+router.post("/mytasks", middleware.verifyToken, authController.getMyTasks)
+
 module.exports = router;

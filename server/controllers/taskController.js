@@ -13,6 +13,7 @@ const getTasks = async (req, res) =>{
 }
 };
 
+
 //Get task by ID
 const getTaskById = (req, res) => {
     Task.getTaskById(req.params.id, (err,task) =>{

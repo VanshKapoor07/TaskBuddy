@@ -105,4 +105,20 @@ const deleteUser = async (req, res) => {
 };
 
 
-module.exports = {createTable, signup, login, getUsers, deleteUser};
+const getMyTasks = (req, res)=>{
+
+    Auth.findbyemail({email: req.user.email}, (err, role, id) =>{
+        if (err) return res.status(500).json({error: err.message});
+        console.log("Fetching tasks for ");
+        console.log("User role:", role);
+        console.log("User id", id);
+
+        Auth.getMyTasks({id:id}, (err, tasks) =>{
+            if (err) return res.status(500).json({error:err.message});
+            res.json(tasks);
+        })
+
+    } );
+    
+}
+module.exports = {createTable, signup, login, getUsers, deleteUser, getMyTasks};

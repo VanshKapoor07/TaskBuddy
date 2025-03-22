@@ -49,6 +49,7 @@ const getTaskById = (id, callback) => {
     });
 };
 
+
 //Create a new task
 const createTask = (task, callback) => {
     db.query("INSERT INTO tasks(title, description, status) VALUES (?, ?, ?)",
