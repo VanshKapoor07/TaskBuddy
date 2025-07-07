@@ -1,45 +1,20 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import Button from './components/Button'
-import Header from './components/Header'
+import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Auth from "./pages/Auth";
+import Header from "./components/Header"; // Optional, you can remove if not needed
+
+import TaskList from "./components/TaskList";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-   
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <Router>
-      <Header />
-      </Router>
-      <div className="card">
-        <Button text={`Count is ${count}`} onClick={() => setCount((count) => count + 1)} className={"cursor-not-allowed opacity-50"}/>
-        <button text="okkk">
-      Hello
-      </button>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-      <Button text="Go to Dashboard" />
-
-      
-     
-
-    </>
-  )
+    <Router>
+      <Header /> {/* Optional */}
+      <Routes>
+        <Route path="/auth" element={<Auth />} />
+        <Route path="/api/tasks" element={<TaskList />} />
+      </Routes>
+    </Router>
+  );
 }
 
-export default App
+export default App;
