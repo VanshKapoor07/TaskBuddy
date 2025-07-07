@@ -10,7 +10,7 @@ function App() {
     <Router>
       <Header /> {/* Optional */}
       <Routes>
-        <Route path="/auth" element={<Auth />} />
+        <Route path="/api/auth" element={<Auth />} />
         <Route path="/api/tasks" element={<TaskList />} />
       </Routes>
     </Router>
