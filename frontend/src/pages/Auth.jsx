@@ -11,6 +11,7 @@ export default function Auth() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
+  const [role, setRole] = useState("");
   const [error, setError] = useState("");
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -20,7 +21,7 @@ export default function Auth() {
     setError("");
 
     const endpoint = isLogin ? "login" : "signup";
-    const body = isLogin ? { email, password } : { name, email, password };
+    const body = isLogin ? { email, password } : { name, email, password, role };
 
     try {
       const response = await fetch(`http://localhost:5000/api/auth/${endpoint}`, {
@@ -195,6 +196,17 @@ export default function Auth() {
                     placeholder="Password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                    required
+                  />
+                </motion.div>
+
+                <motion.div className="input-container" variants={inputVariants}>
+                  <FaLock className="icon" />
+                  <input
+                    type="role"
+                    placeholder="Role"
+                    value={role}
+                    onChange={(e) => setRole(e.target.value)}
                     required
                   />
                 </motion.div>

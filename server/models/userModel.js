@@ -37,10 +37,11 @@ const signupUser = (details, callback) =>{
     console.log("Signing up");
      // Insert user into database
      db.query("INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)", 
-        [details.name, details.email, details.hashedPassword, details.role], 
+        [details.name, details.email, details.hashedPassword, details.userRole], 
         (err, res) => {
             if (err) return callback(err, null);
             console.log("Sign up successful!");
+            return callback(null, res);
         }
     );
 
@@ -130,6 +131,18 @@ const delete_user = (details, callback) => {
     });
 };
 
+const checkUserExists = (details, callback) => {
+  db.query("SELECT * FROM users WHERE email = ?", [details.email], (err, result) => {
+    if (err) return callback(err, null);
+    if (result.length > 0) {
+      return callback(null, true);  // user exists
+    } else {
+      return callback(null, false); // user does not exist
+    }
+  });
+};
 
 
-module.exports = {createUserTable, authenticateUser, signupUser, loginUser, getAllUsers, findbyemail, delete_user, checkTeam, viewTeamMembers, getMyTasks};
+
+
+module.exports = {createUserTable, authenticateUser, signupUser, loginUser, getAllUsers, findbyemail, delete_user, checkTeam, viewTeamMembers, getMyTasks, checkUserExists};

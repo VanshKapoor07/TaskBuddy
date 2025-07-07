@@ -11,42 +11,34 @@ const createTable = (req,res) =>{
 
     });
 };
+const signup = async (req, res) => {
+  try {
+    const { name, email, password, role } = req.body;
 
-const signup = async(req,res) =>{
-   
-    const {name, email, password, role} = req.body;
-
-    Auth.authenticateUser({name, email, password},(err,success)=>{
-        
-        if (err) return res.status(500).json({error:err.message});
-
-        res.status(201).json(success);
-
-    });
-
-    // Hash password
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-    
-    
-    const validRoles = ["user", "admin", "manager"];
-    if (role && !validRoles.includes(role)){
-        return res.status(400).json({message: "Invalid role"});
+    const validRoles = ["member", "admin", "manager"];
+    if (role && !validRoles.includes(role)) {
+      return res.status(400).json({ message: "Invalid role" });
     }
 
-    // Actual sign up
-    Auth.signupUser({name, email, hashedPassword, role}, (err,success)=>{
-        if (err) return res.status(500).json({error:err.message});
-        res.status(201).json(success)
-    })
+    // Check if user already exists
+    Auth.checkUserExists({ email }, async (err, exists) => {
+      if (err) return res.status(500).json({ error: err.message });
+      if (exists) return res.status(400).json({ message: "User already exists" });
 
-    //Ensure role is valid
+      // Hash password
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(password, salt);
 
-    
-    
-
-
-    
+      // Sign up user
+      const userRole = role || "member";
+      Auth.signupUser({ name, email, hashedPassword, userRole }, (err, success) => {
+        if (err) return res.status(500).json({ error: err.message });
+        return res.status(201).json({ message: "Signup successful" });
+      });
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 };
 
 const login = (req,res) => {
